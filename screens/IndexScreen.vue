@@ -22,16 +22,20 @@
         :key="a.id"
         :style="{ flex: 1, flexDirection: 'row' }"
       >
-        <touchable-opacity
+        <touchable-opacity v-if="selected"
           :on-press="() => goToDetail(a)"
           :style="{ marginRight: 5 }"
         >
           <text class="item">Ver</text>
         </touchable-opacity>
 
-        <touchable-opacity :on-press="() => choise()">
-          <text :class="animeChoise == k && selected? 'correct' : '' " class="item">{{ a.title }}</text>
-        </touchable-opacity>
+        <ButtonChoice
+          :title="a.title"
+          :selected="selected"
+          :animeChoise="animeChoise"
+          :index="k"
+          @choise="choise"
+        ></ButtonChoice>
       </view>
 
     </scroll-view>
@@ -42,6 +46,8 @@
 import { getAnimes, randomCount } from "../helpers/animeRandom";
 import { style } from "../helpers/style";
 
+import ButtonChoice from "../components/ButtonChoice"
+
 export default {
   /*async*/ created() {
     this.generateRandomAnime();
@@ -50,7 +56,9 @@ export default {
 
     //console.log(this.animes[1].title)
   },
-
+  components:{
+    ButtonChoice
+  },
   props: {
     navigation: {
       Object,
@@ -80,7 +88,7 @@ export default {
       setTimeout(() => {
         s.generateRandomAnime()
         s.selected = false;
-      }, 1000)
+      }, 2000)
 
       
     }
